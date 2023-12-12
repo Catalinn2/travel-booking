@@ -1,0 +1,7 @@
+package com.teamtiger.travelbookingsys.repositories;
+
+import com.teamtiger.travelbookingsys.models.entities.User;
+import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
+
+public interface UserRepository extends JpaRepositoryImplementation<User, Long> {
+}

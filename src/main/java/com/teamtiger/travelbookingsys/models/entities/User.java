@@ -2,11 +2,12 @@ package com.teamtiger.travelbookingsys.models.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.boot.model.process.internal.UserTypeResolution;
 
 @Data
 @Entity
-@Table(name = "customers")
-public class Customer {
+@Table(name = "users")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,6 +17,7 @@ public class Customer {
     private String lastName;
     @Column(name = "email", unique = true)
     private String email;
-    @Column(name = "contact_number")
+    @Column(name = "contact_numer")
     private String contact;
+
 }
