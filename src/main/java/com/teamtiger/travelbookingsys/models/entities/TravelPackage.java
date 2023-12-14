@@ -18,6 +18,6 @@ public class TravelPackage {
     private String destination;
     @Column(name = "duration")
     private int duration;
-    @Column(name = "price_per_person")
-    private double pricePerPerson;
+    @Column(name = "price")
+    private double price;
 }

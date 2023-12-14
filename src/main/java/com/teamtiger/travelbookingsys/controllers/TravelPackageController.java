@@ -19,6 +19,6 @@ public class TravelPackageController {
 
     @PostMapping
     public ResponseEntity<TravelPackageDTO> createTravelPackage(@RequestBody TravelPackageDTO travelPackageDTO) {
-        return ResponseEntity.ok(travelPackageService.createPackage(travelPackageDTO));
+        return ResponseEntity.ok(travelPackageService.createTravelPackage(travelPackageDTO));
     }
 }

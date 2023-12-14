@@ -16,25 +16,34 @@ public class TravelPackageServiceImpl implements TravelPackageService {
     }
 
     @Override
-    public TravelPackageDTO createPackage(TravelPackageDTO travelPackageDTO) {
+    public TravelPackageDTO createTravelPackage(TravelPackageDTO travelPackageDTO) {
+        TravelPackage travelPackageEntity = convertDTOToEntity(travelPackageDTO);
+
+        TravelPackage savedTravelPackage = travelPackageRepository.save(travelPackageEntity);
+        log.info("Travel package {} was saved", savedTravelPackage.getPackageName());
+
+        return convertEntityToDTO(savedTravelPackage);
+    }
+
+    public TravelPackage convertDTOToEntity(TravelPackageDTO travelPackageDTO) {
         TravelPackage travelPackageEntity = new TravelPackage();
         travelPackageEntity.setPackageName(travelPackageDTO.getPackageName());
         travelPackageEntity.setDescription(travelPackageDTO.getDescription());
         travelPackageEntity.setDestination(travelPackageDTO.getDestination());
         travelPackageEntity.setDuration(travelPackageDTO.getDuration());
-        travelPackageEntity.setPricePerPerson(travelPackageDTO.getPricePerPerson());
+        travelPackageEntity.setPrice(travelPackageDTO.getPrice());
+        return travelPackageEntity;
+    }
 
-        TravelPackage savedTravelPackage = travelPackageRepository.save(travelPackageEntity);
-        log.info("Travel package {} was saved", savedTravelPackage.getPackageName());
-
+    public TravelPackageDTO convertEntityToDTO(TravelPackage travelPackage) {
         TravelPackageDTO travelPackageResponseDTO = new TravelPackageDTO();
-        travelPackageResponseDTO.setId(savedTravelPackage.getId());
-        travelPackageResponseDTO.setPackageName(savedTravelPackage.getPackageName());
-        travelPackageResponseDTO.setDescription(savedTravelPackage.getDescription());
-        travelPackageResponseDTO.setDestination(savedTravelPackage.getDestination());
-        travelPackageResponseDTO.setDuration(savedTravelPackage.getDuration());
-        travelPackageResponseDTO.setPricePerPerson(savedTravelPackage.getPricePerPerson());
-
+        travelPackageResponseDTO.setId(travelPackage.getId());
+        travelPackageResponseDTO.setPackageName(travelPackage.getPackageName());
+        travelPackageResponseDTO.setDescription(travelPackage.getDescription());
+        travelPackageResponseDTO.setDestination(travelPackage.getDestination());
+        travelPackageResponseDTO.setDuration(travelPackage.getDuration());
+        travelPackageResponseDTO.setPrice(travelPackage.getPrice());
         return travelPackageResponseDTO;
+
     }
 }
