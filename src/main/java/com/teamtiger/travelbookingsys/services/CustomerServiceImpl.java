@@ -16,28 +16,32 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO createCustomer(CustomerDTO customerDTO) {
-        //ValidateDTO
         if (customerDTO.getFirstName().length() < 3) {
             throw new IllegalArgumentException("Invalid first name!");
         }
-        //ConvertDTO to Entity
-        Customer customerEntity = new Customer();
-        customerEntity.setFirstName(customerDTO.getFirstName());
-        customerEntity.setLastName(customerDTO.getLastName());
-        customerEntity.setEmail(customerDTO.getEmail());
-        customerEntity.setContact(customerDTO.getContact());
-
-        //save Entity to Database
+        Customer customerEntity = createCustomerEntity(customerDTO);
         Customer savedCustomer = customerRepository.save(customerEntity);
         log.info("Customer {} was saved", savedCustomer.getFirstName());
-        //convert entity to DTO
+        return createCustomerResponseDTO(savedCustomer);
+    }
+
+    private static CustomerDTO createCustomerResponseDTO(Customer savedCustomer) {
         CustomerDTO customerResponseDTO = new CustomerDTO();
         customerResponseDTO.setId(savedCustomer.getId());
         customerResponseDTO.setFirstName(savedCustomer.getFirstName());
         customerResponseDTO.setLastName(savedCustomer.getLastName());
         customerResponseDTO.setEmail(savedCustomer.getEmail());
-        customerResponseDTO.setContact(savedCustomer.getContact());
+        customerResponseDTO.setPhoneNumber(savedCustomer.getPhoneNumber());
 
         return customerResponseDTO;
+    }
+
+    private static Customer createCustomerEntity(CustomerDTO customerDTO) {
+        Customer customerEntity = new Customer();
+        customerEntity.setFirstName(customerDTO.getFirstName());
+        customerEntity.setLastName(customerDTO.getLastName());
+        customerEntity.setEmail(customerDTO.getEmail());
+        customerEntity.setPhoneNumber(customerDTO.getPhoneNumber());
+        return customerEntity;
     }
 }

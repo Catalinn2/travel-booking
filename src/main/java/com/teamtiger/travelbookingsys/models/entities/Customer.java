@@ -16,6 +16,6 @@ public class Customer {
     private String lastName;
     @Column(name = "email", unique = true)
     private String email;
-    @Column(name = "contact_number")
-    private String contact;
+    @Column(name = "phone_number")
+    private String phoneNumber;
 }
