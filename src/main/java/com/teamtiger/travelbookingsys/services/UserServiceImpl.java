@@ -7,6 +7,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -24,6 +28,40 @@ public class UserServiceImpl implements UserService {
         return createUserResponseDTO(savedUser);
     }
 
+    @Override
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(this::createUserResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<UserDTO> getUserById(Long id) {
+        return userRepository.findById(id)
+                .map(this::createUserResponseDTO);
+    }
+
+    @Override
+    public UserDTO updateUser(Long id, UserDTO updatedUserDTO) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()){
+            User existingUser = optionalUser.get();
+            existingUser.setPhoneNumber(updatedUserDTO.getPhoneNumber());
+            existingUser.setFirstName(updatedUserDTO.getFirstName());
+            existingUser.setLastName(updatedUserDTO.getLastName());
+            existingUser.setEmail(updatedUserDTO.getEmail());
+            return createUserResponseDTO(existingUser);
+        } else {
+            throw new IllegalArgumentException("User with ID " + id + " not found");
+        }
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
     private static User createUserEntity(UserDTO userDTO) {
         User userEntity = new User();
         userEntity.setFirstName(userDTO.getFirstName());
@@ -33,7 +71,7 @@ public class UserServiceImpl implements UserService {
         return userEntity;
     }
 
-    private static UserDTO createUserResponseDTO(User savedUser) {
+    private UserDTO createUserResponseDTO(User savedUser) {
         UserDTO userResponseDTO = new UserDTO();
         userResponseDTO.setId(savedUser.getId());
         userResponseDTO.setFirstName(savedUser.getFirstName());

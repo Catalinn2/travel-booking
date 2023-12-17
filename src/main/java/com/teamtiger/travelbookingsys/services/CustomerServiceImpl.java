@@ -7,6 +7,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -25,7 +29,41 @@ public class CustomerServiceImpl implements CustomerService {
         return createCustomerResponseDTO(savedCustomer);
     }
 
-    private static CustomerDTO createCustomerResponseDTO(Customer savedCustomer) {
+    @Override
+    public List<CustomerDTO> getAllCustomers() {
+        List<Customer> customers = customerRepository.findAll();
+        return customers.stream()
+                .map(this::createCustomerResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<CustomerDTO> getUserById(Long id) {
+        return customerRepository.findById(id)
+                .map(this::createCustomerResponseDTO);
+    }
+
+    @Override
+    public CustomerDTO updatedCustomer(Long id, CustomerDTO updatedCustomerDTO) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(id);
+        if (optionalCustomer.isPresent()) {
+            Customer existingCustomer = optionalCustomer.get();
+            existingCustomer.setPhoneNumber(updatedCustomerDTO.getPhoneNumber());
+            existingCustomer.setEmail(updatedCustomerDTO.getEmail());
+            existingCustomer.setFirstName(updatedCustomerDTO.getFirstName());
+            existingCustomer.setLastName(updatedCustomerDTO.getLastName());
+            return createCustomerResponseDTO(existingCustomer);
+        } else {
+            throw new IllegalArgumentException("Customer with ID " + id + " not found");
+        }
+    }
+
+    @Override
+    public void deleteCustomer(Long id) {
+        customerRepository.deleteById(id);
+    }
+
+    private CustomerDTO createCustomerResponseDTO(Customer savedCustomer) {
         CustomerDTO customerResponseDTO = new CustomerDTO();
         customerResponseDTO.setId(savedCustomer.getId());
         customerResponseDTO.setFirstName(savedCustomer.getFirstName());
