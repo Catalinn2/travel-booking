@@ -18,7 +18,7 @@ public class Booking {
     private Long id;
     @Column(name = "date")
     private LocalDate date;
-    @Column(name = "aviable_slots")
+    @Column(name = "available_slots")
     private int availableSpots;
     @ManyToOne
     @JoinColumn(name = "travel_packages_id")

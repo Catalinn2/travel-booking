@@ -49,7 +49,7 @@ public class BookingServiceImpl implements BookingService {
         bookingDTO.setAvailableSpots(bookingDTO.getAvailableSpots());
 
         TravelPackage travelPackage = booking.getTravelPackage();
-        if(travelPackage != null) {
+        if (travelPackage != null) {
             bookingDTO.setTravelPackageId(booking.getTravelPackage().getId());
         }
         return bookingDTO;
