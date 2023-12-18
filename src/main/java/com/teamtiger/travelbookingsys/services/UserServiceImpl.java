@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO updateUser(Long id, UserDTO updatedUserDTO) {
         Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isPresent()){
+        if (optionalUser.isPresent()) {
             User existingUser = optionalUser.get();
             existingUser.setPhoneNumber(updatedUserDTO.getPhoneNumber());
             existingUser.setFirstName(updatedUserDTO.getFirstName());
