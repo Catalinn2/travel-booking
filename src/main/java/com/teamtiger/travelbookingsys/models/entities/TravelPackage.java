@@ -20,4 +20,7 @@ public class TravelPackage {
     private int duration;
     @Column(name = "price")
     private double price;
+    @ManyToOne
+    @JoinColumn(name = "created_by_user_id")
+    private User createdByUser;
 }

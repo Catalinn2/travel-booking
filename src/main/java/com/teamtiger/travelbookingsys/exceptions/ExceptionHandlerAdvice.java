@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Map;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Slf4j
@@ -24,6 +25,26 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(TravelPackageNotFoundException.class)
     public ResponseEntity<String> travelPackageNotFoundException(TravelPackageNotFoundException travelPackageNotFoundException) {
         return new ResponseEntity<>(objectToString(Map.of("message", travelPackageNotFoundException.getMessage())), NOT_FOUND);
+    }
+
+    @ExceptionHandler(BookingNotFoundException.class)
+    public ResponseEntity<String> bookingNotFoundException(BookingNotFoundException bookingNotFoundException) {
+        return new ResponseEntity<>(objectToString(Map.of("message", bookingNotFoundException.getMessage())), NOT_FOUND);
+    }
+
+    @ExceptionHandler(BookingIdInvalidException.class)
+    public ResponseEntity<String> bookingIdInvalidException(BookingIdInvalidException bookingIdInvalidException) {
+        return new ResponseEntity<>(objectToString(Map.of("message", bookingIdInvalidException.getMessage())), BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CustomerNotFoundException.class)
+    public ResponseEntity<String> customerNotFoundException(CustomerNotFoundException customerNotFoundException) {
+        return new ResponseEntity<>(objectToString(Map.of("message", customerNotFoundException.getMessage())), NOT_FOUND);
+    }
+
+    @ExceptionHandler(CustomerIdInvalidException.class)
+    public ResponseEntity<String> customerNotFoundException(CustomerIdInvalidException customerIdInvalidException) {
+        return new ResponseEntity<>(objectToString(Map.of("message", customerIdInvalidException.getMessage())), BAD_REQUEST);
     }
 
     private String objectToString(Object response) {

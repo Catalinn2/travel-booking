@@ -38,7 +38,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Optional<CustomerDTO> getUserById(Long id) {
+    public Optional<CustomerDTO> getCustomerById(Long id) {
         return customerRepository.findById(id)
                 .map(this::createCustomerResponseDTO);
     }
