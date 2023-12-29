@@ -4,6 +4,7 @@ import com.teamtiger.travelbookingsys.exceptions.booking.BookingIdInvalidExcepti
 import com.teamtiger.travelbookingsys.exceptions.booking.BookingNotFoundException;
 import com.teamtiger.travelbookingsys.exceptions.customer.CustomerIdInvalidException;
 import com.teamtiger.travelbookingsys.exceptions.customer.CustomerNotFoundException;
+import com.teamtiger.travelbookingsys.exceptions.order.OrderPeopleCountExceedsLimitException;
 import com.teamtiger.travelbookingsys.models.dtos.DetailedOrderDTO;
 import com.teamtiger.travelbookingsys.models.dtos.OrderDTO;
 import com.teamtiger.travelbookingsys.models.entities.Booking;
@@ -29,12 +30,23 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public DetailedOrderDTO createOrder(OrderDTO orderDTO) {
         Order orderEntity = convertDTOToEntity(orderDTO);
+        if (!isBookingValid(orderEntity.getBookingId().getId(), orderEntity.getPeopleCount())) {
+            throw new OrderPeopleCountExceedsLimitException("People count exceeds the limit of available spots");
+        }
         Order savedOrder = orderRepository.save(orderEntity);
 
         log.info("Order {} was saved", savedOrder.getId());
 
         DetailedOrderDTO detailedOrderDTO = convertEntityToDetailedDTO(savedOrder);
         return detailedOrderDTO;
+    }
+
+    public boolean isBookingValid(Long bookingId, int newPeopleCount) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new BookingNotFoundException("Booking not found!"));
+        int totalPeopleCountInOrders = orderRepository.getTotalPeopleCountByBookingId(bookingId);
+        int remainingSpots = booking.getAvailableSpots() - totalPeopleCountInOrders;
+        return newPeopleCount <= remainingSpots;
     }
 
     public DetailedOrderDTO convertEntityToDetailedDTO(Order order) {
