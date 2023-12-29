@@ -6,6 +6,7 @@ import com.teamtiger.travelbookingsys.exceptions.booking.BookingIdInvalidExcepti
 import com.teamtiger.travelbookingsys.exceptions.booking.BookingNotFoundException;
 import com.teamtiger.travelbookingsys.exceptions.customer.CustomerIdInvalidException;
 import com.teamtiger.travelbookingsys.exceptions.customer.CustomerNotFoundException;
+import com.teamtiger.travelbookingsys.exceptions.order.OrderPeopleCountExceedsLimitException;
 import com.teamtiger.travelbookingsys.exceptions.travelPackage.TravelPackageNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +51,11 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(CustomerIdInvalidException.class)
     public ResponseEntity<String> customerNotFoundException(CustomerIdInvalidException customerIdInvalidException) {
         return new ResponseEntity<>(objectToString(Map.of("message", customerIdInvalidException.getMessage())), BAD_REQUEST);
+    }
+
+    @ExceptionHandler(OrderPeopleCountExceedsLimitException.class)
+    public ResponseEntity<String> orderPeopleCountExceedsLimit(OrderPeopleCountExceedsLimitException orderPeopleCountExceedsLimit) {
+        return new ResponseEntity<>(objectToString(Map.of("message", orderPeopleCountExceedsLimit.getMessage())), BAD_REQUEST);
     }
 
     private String objectToString(Object response) {
