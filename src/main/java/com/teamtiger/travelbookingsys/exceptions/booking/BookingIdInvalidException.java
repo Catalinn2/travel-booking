@@ -1,4 +1,4 @@
-package com.teamtiger.travelbookingsys.exceptions;
+package com.teamtiger.travelbookingsys.exceptions.booking;
 
 public class BookingIdInvalidException extends RuntimeException{
     public BookingIdInvalidException(String message) {

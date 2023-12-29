@@ -1,4 +1,4 @@
-package com.teamtiger.travelbookingsys.exceptions;
+package com.teamtiger.travelbookingsys.exceptions.customer;
 
 public class CustomerNotFoundException extends RuntimeException {
     public CustomerNotFoundException(String message) {

@@ -1,9 +1,10 @@
 package com.teamtiger.travelbookingsys.services;
 
-import com.teamtiger.travelbookingsys.exceptions.BookingIdInvalidException;
-import com.teamtiger.travelbookingsys.exceptions.BookingNotFoundException;
-import com.teamtiger.travelbookingsys.exceptions.CustomerIdInvalidException;
-import com.teamtiger.travelbookingsys.exceptions.CustomerNotFoundException;
+import com.teamtiger.travelbookingsys.exceptions.booking.BookingIdInvalidException;
+import com.teamtiger.travelbookingsys.exceptions.booking.BookingNotFoundException;
+import com.teamtiger.travelbookingsys.exceptions.customer.CustomerIdInvalidException;
+import com.teamtiger.travelbookingsys.exceptions.customer.CustomerNotFoundException;
+import com.teamtiger.travelbookingsys.models.dtos.DetailedOrderDTO;
 import com.teamtiger.travelbookingsys.models.dtos.OrderDTO;
 import com.teamtiger.travelbookingsys.models.entities.Booking;
 import com.teamtiger.travelbookingsys.models.entities.Customer;
@@ -26,11 +27,23 @@ public class OrderServiceImpl implements OrderService {
     private final CustomerRepository customerRepository;
 
     @Override
-    public OrderDTO createOrder(OrderDTO orderDTO) {
+    public DetailedOrderDTO createOrder(OrderDTO orderDTO) {
         Order orderEntity = convertDTOToEntity(orderDTO);
         Order savedOrder = orderRepository.save(orderEntity);
+
         log.info("Order {} was saved", savedOrder.getId());
-        return convertEntityToDTO(savedOrder);
+
+        DetailedOrderDTO detailedOrderDTO = convertEntityToDetailedDTO(savedOrder);
+        return detailedOrderDTO;
+    }
+
+    public DetailedOrderDTO convertEntityToDetailedDTO(Order order) {
+        DetailedOrderDTO detailedOrderDTO = new DetailedOrderDTO();
+        detailedOrderDTO.setId(order.getId());
+        detailedOrderDTO.setBookingId(order.getBookingId().getId());
+        detailedOrderDTO.setCustomerId(order.getCustomerId().getId());
+        detailedOrderDTO.setPeopleCount(order.getPeopleCount());
+        return detailedOrderDTO;
     }
 
     public OrderDTO convertEntityToDTO(Order order) {
