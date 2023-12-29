@@ -1,5 +1,6 @@
 package com.teamtiger.travelbookingsys.services;
 
+import com.teamtiger.travelbookingsys.models.dtos.DetailedTravelPackageDTO;
 import com.teamtiger.travelbookingsys.models.dtos.TravelPackageDTO;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 public interface TravelPackageService {
     TravelPackageDTO createTravelPackage(TravelPackageDTO travelPackageDTO);
 
-    List<TravelPackageDTO> getAllTravelPackages();
+    List<DetailedTravelPackageDTO> getAllTravelPackages();
 
     void deleteTravelPackage(Long id);
 

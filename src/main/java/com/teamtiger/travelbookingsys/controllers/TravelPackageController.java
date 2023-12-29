@@ -1,5 +1,6 @@
 package com.teamtiger.travelbookingsys.controllers;
 
+import com.teamtiger.travelbookingsys.models.dtos.DetailedTravelPackageDTO;
 import com.teamtiger.travelbookingsys.models.dtos.TravelPackageDTO;
 import com.teamtiger.travelbookingsys.services.TravelPackageService;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class TravelPackageController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TravelPackageDTO>> getAllTravelPackages() {
+    public ResponseEntity<List<DetailedTravelPackageDTO>> getAllTravelPackages() {
         return ResponseEntity.ok(travelPackageService.getAllTravelPackages());
     }
 
