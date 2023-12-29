@@ -37,8 +37,13 @@ public class OrderServiceImpl implements OrderService {
 
         log.info("Order {} was saved", savedOrder.getId());
 
-        DetailedOrderDTO detailedOrderDTO = convertEntityToDetailedDTO(savedOrder);
+        double totalPrice = calculateTotalPrice(savedOrder.getPeopleCount(), savedOrder.getBookingId().getTravelPackage().getPrice());
+        DetailedOrderDTO detailedOrderDTO = convertEntityToDetailedDTO(savedOrder, totalPrice);
         return detailedOrderDTO;
+    }
+
+    public double calculateTotalPrice(int peopleCount, double pricePerPerson) {
+        return peopleCount * pricePerPerson;
     }
 
     public boolean isBookingValid(Long bookingId, int newPeopleCount) {
@@ -49,12 +54,13 @@ public class OrderServiceImpl implements OrderService {
         return newPeopleCount <= remainingSpots;
     }
 
-    public DetailedOrderDTO convertEntityToDetailedDTO(Order order) {
+    public DetailedOrderDTO convertEntityToDetailedDTO(Order order, double totalPrice) {
         DetailedOrderDTO detailedOrderDTO = new DetailedOrderDTO();
         detailedOrderDTO.setId(order.getId());
         detailedOrderDTO.setBookingId(order.getBookingId().getId());
         detailedOrderDTO.setCustomerId(order.getCustomerId().getId());
         detailedOrderDTO.setPeopleCount(order.getPeopleCount());
+        detailedOrderDTO.setTotalPrice(totalPrice);
         return detailedOrderDTO;
     }
 
