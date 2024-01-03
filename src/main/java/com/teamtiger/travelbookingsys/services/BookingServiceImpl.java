@@ -45,8 +45,9 @@ public class BookingServiceImpl implements BookingService {
 
     private BookingDTO convertToDTO(Booking booking) {
         BookingDTO bookingDTO = new BookingDTO();
+        bookingDTO.setId(booking.getId());
         bookingDTO.setDate(booking.getDate());
-        bookingDTO.setAvailableSpots(bookingDTO.getAvailableSpots());
+        bookingDTO.setAvailableSpots(booking.getAvailableSpots());
 
         TravelPackage travelPackage = booking.getTravelPackage();
         if (travelPackage != null) {

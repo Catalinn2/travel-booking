@@ -29,35 +29,34 @@ public class ExceptionHandlerAdvice {
     }
 
     @ExceptionHandler(TravelPackageNotFoundException.class)
-    public ResponseEntity<String> travelPackageNotFoundException(TravelPackageNotFoundException travelPackageNotFoundException) {
+    public ResponseEntity<String> handleTravelPackageNotFoundException(TravelPackageNotFoundException travelPackageNotFoundException) {
         return new ResponseEntity<>(objectToString(Map.of("message", travelPackageNotFoundException.getMessage())), NOT_FOUND);
     }
 
     @ExceptionHandler(BookingNotFoundException.class)
-    public ResponseEntity<String> bookingNotFoundException(BookingNotFoundException bookingNotFoundException) {
+    public ResponseEntity<String> handleBookingNotFoundException(BookingNotFoundException bookingNotFoundException) {
         return new ResponseEntity<>(objectToString(Map.of("message", bookingNotFoundException.getMessage())), NOT_FOUND);
     }
 
     @ExceptionHandler(BookingIdInvalidException.class)
-    public ResponseEntity<String> bookingIdInvalidException(BookingIdInvalidException bookingIdInvalidException) {
+    public ResponseEntity<String> handleBookingIdInvalidException(BookingIdInvalidException bookingIdInvalidException) {
         return new ResponseEntity<>(objectToString(Map.of("message", bookingIdInvalidException.getMessage())), BAD_REQUEST);
     }
 
     @ExceptionHandler(CustomerNotFoundException.class)
-    public ResponseEntity<String> customerNotFoundException(CustomerNotFoundException customerNotFoundException) {
+    public ResponseEntity<String> handleCustomerNotFoundException(CustomerNotFoundException customerNotFoundException) {
         return new ResponseEntity<>(objectToString(Map.of("message", customerNotFoundException.getMessage())), NOT_FOUND);
     }
 
     @ExceptionHandler(CustomerIdInvalidException.class)
-    public ResponseEntity<String> customerNotFoundException(CustomerIdInvalidException customerIdInvalidException) {
+    public ResponseEntity<String> handleCustomerNotFoundException(CustomerIdInvalidException customerIdInvalidException) {
         return new ResponseEntity<>(objectToString(Map.of("message", customerIdInvalidException.getMessage())), BAD_REQUEST);
     }
 
     @ExceptionHandler(OrderPeopleCountExceedsLimitException.class)
-    public ResponseEntity<String> orderPeopleCountExceedsLimit(OrderPeopleCountExceedsLimitException orderPeopleCountExceedsLimit) {
+    public ResponseEntity<String> handleOrderPeopleCountExceedsLimitException(OrderPeopleCountExceedsLimitException orderPeopleCountExceedsLimit) {
         return new ResponseEntity<>(objectToString(Map.of("message", orderPeopleCountExceedsLimit.getMessage())), BAD_REQUEST);
     }
-
     private String objectToString(Object response) {
         try {
             return objectMapper.writeValueAsString(response);
