@@ -6,8 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT COALESCE(SUM(o.peopleCount), 0) FROM Order o WHERE o.bookingId.id = :bookingId AND o.peopleCount IS NOT NULL AND o.peopleCount != 0")
     int getTotalPeopleCountByBookingId(@Param("bookingId")Long bookingId);
+    List<Order> findByCustomerId_Id(Long customerId);
 }
