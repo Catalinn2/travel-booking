@@ -17,7 +17,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -40,6 +42,32 @@ public class OrderServiceImpl implements OrderService {
         double totalPrice = calculateTotalPrice(savedOrder.getPeopleCount(), savedOrder.getBookingId().getTravelPackage().getPrice());
         DetailedOrderDTO detailedOrderDTO = convertEntityToDetailedDTO(savedOrder, totalPrice);
         return detailedOrderDTO;
+    }
+
+    @Override
+    public List<DetailedOrderDTO> getAllOrders() {
+        List<Order> orders = orderRepository.findAll();
+        return orders.stream()
+                .map(order -> convertEntityToDetailedDTO(order, calculateTotalPrice(order.getPeopleCount(), order.getBookingId().getTravelPackage().getPrice())))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DetailedOrderDTO> getOrderByCustomerId(Long customerId) {
+        List<Order> orders = orderRepository.findByCustomerId_Id(customerId);
+        if (orders.isEmpty()) {
+            throw new CustomerNotFoundException("Customer with the provided Id not found");
+        }
+
+        return orders.stream()
+                .map(order -> convertEntityToDetailedDTO(order, calculateTotalPrice(order.getPeopleCount(), order.getBookingId().getTravelPackage().getPrice())))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteOrder(Long id) {
+        orderRepository.deleteById(id);
+        log.info("Order with id " + id + "successfully deleted");
     }
 
     public double calculateTotalPrice(int peopleCount, double pricePerPerson) {
